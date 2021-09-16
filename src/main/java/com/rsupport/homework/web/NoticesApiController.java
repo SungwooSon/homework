@@ -6,13 +6,12 @@ import com.rsupport.homework.web.dto.NoticesResponseDto;
 import com.rsupport.homework.web.dto.NoticesSaveRequestDto;
 import com.rsupport.homework.web.dto.NoticesUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class NoticesApiController {
     private final NoticesService noticesService;
 
@@ -41,4 +40,5 @@ public class NoticesApiController {
     public List<NoticesListResponseDto> findAll() {
         return noticesService.findAllDesc();
     }
+
 }

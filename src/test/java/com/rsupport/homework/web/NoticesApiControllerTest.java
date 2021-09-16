@@ -6,20 +6,14 @@ import com.rsupport.homework.domain.notices.NoticesRepository;
 import com.rsupport.homework.web.dto.NoticesSaveRequestDto;
 import com.rsupport.homework.web.dto.NoticesUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -27,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
 class NoticesApiControllerTest {
     @LocalServerPort
     private int port;
@@ -38,19 +31,12 @@ class NoticesApiControllerTest {
     @Autowired
     private NoticesRepository noticesRepository;
 
-    @Autowired
-    private WebApplicationContext context;
-
-    private MockMvc mvc;
-
-
     @AfterEach
     public void tearDown() throws Exception {
         noticesRepository.deleteAll();
     }
 
     @Test
-    //@WithMockUser(roles="USER")
     public void Notices_등록된다() throws Exception {
         //given
         String title = "title";
@@ -65,10 +51,6 @@ class NoticesApiControllerTest {
 
         //when
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
-        /*mvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsString(requestDto)))
-                .andExpect(status().isOk());*/
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -80,7 +62,6 @@ class NoticesApiControllerTest {
     }
 
     @Test
-    //@WithMockUser(roles="USER")
     public void Notices_수정된다() throws Exception {
         //given
         Notices savedNotices = noticesRepository.save(Notices.builder()
@@ -104,10 +85,6 @@ class NoticesApiControllerTest {
 
         //when
         ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
-        /*mvc.perform(put(url)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsString(requestDto)))
-                .andExpect(status().isOk());*/
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
